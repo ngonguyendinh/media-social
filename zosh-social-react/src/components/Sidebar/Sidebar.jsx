@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { logoutAction } from "../../Redux/Auth/auth.action";
 
 const Sidebar = () => {
-  const { auth } = useSelector((store) => store);
+  const { auth } = useSelector(store => store);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();

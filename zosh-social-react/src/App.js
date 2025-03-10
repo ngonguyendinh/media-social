@@ -29,7 +29,7 @@ function App() {
         <Route path='/*'element={auth.user?<HomePage/>:<Authentication/>}/>
         <Route path='/message'element={<Message/>}/>
         <Route path='/*' element={<Authentication/>}/>
-        {/*<Route path='/profile'element={<Profile/>}/> */}
+        
        
         
       </Routes>

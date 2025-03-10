@@ -75,7 +75,12 @@ const MiddlePart = () => {
       </Card>
 
       <div className="mt-5 space-y-5">
-        {post.posts.map((item) => <PostCard item={item} />)}
+      {post.posts
+    .slice() // tạo bản sao để không mutate mảng gốc
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // sắp xếp giảm dần theo thời gian
+    .map((item) => (
+      <PostCard key={item.id} item={item} />
+    ))}
 
       </div>
       <div>

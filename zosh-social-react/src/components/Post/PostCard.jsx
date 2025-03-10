@@ -21,6 +21,12 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useDispatch, useSelector } from "react-redux";
 import { createCommentAction, getLikePostAction } from "../../Redux/Post/post.action";
 import { isLikedByReqUser } from "../../utils/isLikeByReqUser";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { Link } from "react-router-dom";
+
+
+dayjs.extend(relativeTime);
 
 const formatId = (str) =>
   str
@@ -62,9 +68,16 @@ const PostCard = ({ item }) => {
             <MoreVertIcon />
           </IconButton>
         }
-        title={item.user.firstName + " " + item.user.lastName}
-        subheader={"@" + formatId(item.user.firstName) + "_" + formatId(item.user.lastName)}
+        title={ <Link
+          to={`/profile/${item.user.id}`}
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          {item.user.firstName + " " + item.user.lastName}
+        </Link>}
+        subheader={` ${dayjs(item.createdAt).fromNow()}`}
+        
       />
+      
       <CardContent>
         <Typography variant="body2" sx={{ }}>
           {item.caption}
