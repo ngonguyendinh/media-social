@@ -3,10 +3,12 @@ package com.example.mxh.controller;
 import com.example.mxh.map.MessageMapper;
 import com.example.mxh.model.message.Message;
 import com.example.mxh.model.message.MessageDto;
+import com.example.mxh.model.notification.Notification;
 import lombok.AllArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -20,7 +22,13 @@ public class RealTimeChat {
         simpMessagingTemplate.convertAndSendToUser(groupId,"/private",message);
         return message;
     }
-
+    @MessageMapping("/notify")
+    @SendTo("/topic/notifications")
+    public Notification sendNotification(Notification notification) throws Exception {
+        // Giả lập xử lý (ví dụ: delay 500ms)
+        Thread.sleep(500);
+        return notification;
+    }
 
 
 }
