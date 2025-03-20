@@ -18,8 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -85,6 +87,12 @@ public class UserService implements IUserService {
         userRepository.save(user2);
 
         return UserMapper.map(user2);
+    }
+
+    @Override
+    public Set<User> findUsersByIds(Set<Integer> following) {
+        List<User> users = userRepository.findAllById(following);
+        return new HashSet<>(users);
     }
 
     @Override

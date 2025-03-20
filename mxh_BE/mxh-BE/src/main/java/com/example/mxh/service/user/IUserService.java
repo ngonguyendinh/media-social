@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Set;
 
 public interface IUserService {
     AuthResponse create(FormCreateUser form) throws ParseException, Exception;
@@ -18,6 +19,7 @@ public interface IUserService {
     Page<UserDto> findAll(Pageable pageable);
     User update(int id, User user) throws UserException, ParseException;
     UserDto followUser(int id, int idFollower)throws UserException;
+    Set<User> findUsersByIds(Set<Integer> following);
     List<UserDto> searchUser(String keySearch);
     User findUserByJwt(String jwt);
 }

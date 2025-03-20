@@ -45,7 +45,7 @@ const HomePage = () => {
 
         {location.pathname === "/" && <Grid item lg={3} className="relative">
           <div className="sticky top-0 w-full">
-            <HomeRigth />
+            <HomeRigth username={auth.user?.username} />
           </div>
         </Grid>}
       </Grid>

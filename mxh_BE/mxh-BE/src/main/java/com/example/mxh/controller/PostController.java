@@ -7,12 +7,14 @@ import com.example.mxh.model.notification.Notification;
 import com.example.mxh.model.post.Post;
 import com.example.mxh.model.post.PostDto;
 import com.example.mxh.model.user.User;
+import com.example.mxh.service.notification.INotificationService;
 import com.example.mxh.service.post.IPostService;
 import com.example.mxh.service.user.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,27 +29,20 @@ public class PostController {
     private IPostService postService;
     private IUserService iUserService;
     private SimpMessagingTemplate messagingTemplate;
+    private INotificationService notificationService;
     @PostMapping("/user")
-    public ResponseEntity<PostDto> createPost(@RequestBody FormCreatePost form,@RequestHeader("Authorization") String jwt){
+    public ResponseEntity<PostDto> createPost(@RequestBody FormCreatePost form,@RequestHeader("Authorization") String jwt) throws UserException {
         User user = iUserService.findUserByJwt(jwt);
         Post post = postService.createPost(form, user.getId());
+
         return new ResponseEntity<>(PostMapper.map(post), HttpStatus.CREATED);
     }
+
+
     @DeleteMapping("/{postsId}")
     public ResponseEntity<String> deletePost(@PathVariable("postsId")int postId, @RequestHeader("Authorization") String jwt) throws Exception {
         User user = iUserService.findUserByJwt(jwt);
-        Set<User> followers = new HashSet<>();
-        Set<Integer> userIdFollow = user.getFollowing();
-        for (Integer userId : userIdFollow) {
-            User userFollowing = iUserService.findById(userId);
-            followers.add(userFollowing);
-        }
-        Notification notification = Notification.builder().
-                message("Có bài đăng mới từ"+user.getFirstName()+" "+user.getLastName())
-                        .type("newPost").build();
-        for (User follower : followers) {
-            messagingTemplate.convertAndSendToUser(follower.getUsername(), "/notification", notification);
-        }
+
         postService.deletePost(postId, user.getId());
         return new ResponseEntity<>("the post is deleted successfull",HttpStatus.OK);
     }
@@ -78,10 +73,10 @@ public class PostController {
 
             if (post.getUser().getId() != user.getId()) {
 
-                Notification notification = Notification.builder()
-                        .message(iUserService.findById(user.getId()).getUsername()+ "đã thích bài viết của bạn  " )
-                        .type("like")
-                        .build();
+                Notification notification = new Notification();
+                        notification.setMessage(user.getFirstName()+" "+user.getLastName()+ " đã thích bài viết của bạn  " );
+                        notification.setType("like");
+                notificationService.create(notification);
                 messagingTemplate.convertAndSendToUser(
                         post.getUser().getUsername(),
                         "/notification",
