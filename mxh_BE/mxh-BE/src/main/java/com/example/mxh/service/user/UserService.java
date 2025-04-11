@@ -29,10 +29,10 @@ public class UserService implements IUserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     @Override
-    public AuthResponse create(FormCreateUser form) throws ParseException, Exception {
+    public AuthResponse create(FormCreateUser form) throws UserException, Exception {
         var user = userRepository.findByUsername(form.getUsername());
         if (user != null){
-            return null;
+            throw new UserException("username"+form.getUsername()+" đã tồn tại");
         }
         User newUser = UserMapper.map(form);
         newUser.setPassword(passwordEncoder.encode(form.getPassword()));

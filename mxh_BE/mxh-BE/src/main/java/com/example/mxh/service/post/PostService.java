@@ -5,14 +5,13 @@ import com.example.mxh.form.FormCreatePost;
 import com.example.mxh.map.CommentMapper;
 import com.example.mxh.map.PostMapper;
 import com.example.mxh.model.notification.Notification;
-import com.example.mxh.model.notification.UserNotification;
 import com.example.mxh.model.post.Post;
 import com.example.mxh.model.post.PostDto;
 import com.example.mxh.model.user.User;
+import com.example.mxh.repository.NotificationRepository;
 import com.example.mxh.repository.PostRepository;
 import com.example.mxh.repository.UserRepository;
 import com.example.mxh.service.notification.INotificationService;
-import com.example.mxh.service.notification.IUserNotificationService;
 import com.example.mxh.service.user.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -31,7 +30,7 @@ public class PostService implements IPostService{
     private UserRepository userRepository;
     private IUserService userService;
     private INotificationService notificationService;
-    private IUserNotificationService userNotificationService;
+    private NotificationRepository notificationRepository;
     private SimpMessagingTemplate messagingTemplate;
     @Override
     public Post createPost(FormCreatePost form, int idUser) throws UserException {
@@ -39,20 +38,8 @@ public class PostService implements IPostService{
         Post newPost = PostMapper.map(form);
 
         Set<User> followers = userService.findUsersByIds(user.getFollowing());
-
-        Notification notification = new Notification();
-        notification.setMessage("Có bài đăng mới từ " + user.getFirstName() + " " + user.getLastName());
-        notification.setType("newPost");
-        Notification savedNotification = notificationService.create(notification);
-
-        for (User follower : followers) {
-            UserNotification userNotification = new UserNotification();
-            userNotification.setNotification(savedNotification);
-            userNotification.setUser(follower);
-            userNotificationService.create(userNotification);
-            sendNotification(follower,notification);
-
-        }
+        String message = "Có bài đăng mới từ " + user.getFirstName() + " " + user.getLastName();
+        notificationService.create(user,followers,message);
 
         return postRepository.save(newPost);
     }

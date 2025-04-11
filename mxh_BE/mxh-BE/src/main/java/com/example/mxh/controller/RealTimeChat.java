@@ -22,13 +22,7 @@ public class RealTimeChat {
         simpMessagingTemplate.convertAndSendToUser(groupId,"/private",message);
         return message;
     }
-    @MessageMapping("/notify")
-    @SendTo("/topic/notifications")
-    public Notification sendNotification(Notification notification) throws Exception {
-        // Giả lập xử lý (ví dụ: delay 500ms)
-        Thread.sleep(500);
-        return notification;
-    }
+
 
 
 }

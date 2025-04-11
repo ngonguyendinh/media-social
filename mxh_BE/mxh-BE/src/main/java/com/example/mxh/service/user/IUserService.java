@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface IUserService {
-    AuthResponse create(FormCreateUser form) throws ParseException, Exception;
+    AuthResponse create(FormCreateUser form) throws UserException, Exception;
     User findById(int id) throws UserException;
     Page<UserDto> findAll(Pageable pageable);
     User update(int id, User user) throws UserException, ParseException;
