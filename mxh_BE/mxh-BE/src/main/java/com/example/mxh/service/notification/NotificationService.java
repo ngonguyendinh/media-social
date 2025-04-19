@@ -34,13 +34,15 @@ public class NotificationService implements  INotificationService{
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
-    public Notification create( User user ,Set<User> followers, String message) throws UserException {
+    public Notification createPost( User user ,Set<User> followers, String message) throws UserException {
         Notification notification = new Notification();
         notification.setMessage(message);
         notification.setUser(user);
         notification.setType("newPost");
         notificationRepository.save(notification);
-
+        if (followers == null || followers.isEmpty()) {
+            return notificationRepository.save(notification);
+        }
         for(User follower : followers){
             NotificationRecipient recipient = new NotificationRecipient();
             recipient.setNotification(notification);
@@ -52,7 +54,7 @@ public class NotificationService implements  INotificationService{
             // Tạo nhiệm vụ gửi thông báo
             NotificationTask task = new NotificationTask(
                     savedRecipient.getId(),
-                    (long) follower.getId(),
+                    Long.valueOf( follower.getId()),
                     message
             );
             notificationWorkQueu.enqueue(task);

@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
+
 public class NotificationTask {
     private final Long notificationRecipientId;
     private final Long recipientId;

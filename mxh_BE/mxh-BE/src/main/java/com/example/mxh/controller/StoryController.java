@@ -19,7 +19,7 @@ public class StoryController {
     private IStoryService storyService;
     private IUserService userService;
     @PostMapping
-    public StoryDto createStory(@RequestBody FormCreateStory form , @RequestHeader("Authorization") String jwt){
+    public StoryDto createStory(@RequestBody FormCreateStory form , @RequestHeader("Authorization") String jwt) throws UserException {
         User user = userService.findUserByJwt(jwt);
         return StoryMapper.map(storyService.createStory(form,user));
     }

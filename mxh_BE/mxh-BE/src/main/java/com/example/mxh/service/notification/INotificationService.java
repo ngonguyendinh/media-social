@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface INotificationService {
-    Notification create(User user, Set<User> followers, String message) throws UserException;
+    Notification createPost(User user, Set<User> followers, String message) throws UserException;
     List<NotificationRecipient> getNotificationsForUser(int userId);
     NotificationRecipient readNotification(Long id);
 }

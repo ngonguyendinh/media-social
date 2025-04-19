@@ -18,7 +18,7 @@ public class ReelsContrller {
     private IReelsService reelsService;
     private IUserService userService;
     @PostMapping
-    public ReelsDto createReel(@RequestBody FormCreateReel form,@RequestHeader("Authorization") String jwt){
+    public ReelsDto createReel(@RequestBody FormCreateReel form,@RequestHeader("Authorization") String jwt) throws UserException {
         User user = userService.findUserByJwt(jwt);
         return reelsService.createReels(form,user);
     }

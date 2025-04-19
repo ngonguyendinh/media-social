@@ -101,9 +101,10 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User findUserByJwt(String jwt) {
+    public User findUserByJwt(String jwt) throws UserException {
         String username = JwtProvider.getUsernameFromToken(jwt);
         User user = userRepository.findByUsername(username);
         return user;
+
     }
 }

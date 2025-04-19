@@ -55,7 +55,7 @@ public class UserController {
         return  iUserService.followUser(user.getId(), idFollower);
     }
     @GetMapping("/profile")
-    public UserDto getUserFromToken(@RequestHeader("Authorization") String jwt){
+    public UserDto getUserFromToken(@RequestHeader("Authorization") String jwt) throws UserException {
 //        System.out.println("jwt--------"+jwt);
         return UserMapper.map(iUserService.findUserByJwt(jwt));
     }

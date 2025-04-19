@@ -34,7 +34,6 @@ public class PostController {
     public ResponseEntity<PostDto> createPost(@RequestBody FormCreatePost form,@RequestHeader("Authorization") String jwt) throws UserException {
         User user = iUserService.findUserByJwt(jwt);
         Post post = postService.createPost(form, user.getId());
-
         return new ResponseEntity<>(PostMapper.map(post), HttpStatus.CREATED);
     }
 
@@ -56,7 +55,7 @@ public class PostController {
         return new ResponseEntity<>(postService.findByUserId(idUser),HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<PostDto>> findAll( ){
+    public ResponseEntity<List<PostDto>> findAll(){
         return new ResponseEntity<>(postService.findAll(),HttpStatus.OK);
     }
     @PutMapping("/save/{Pid}")
@@ -76,7 +75,7 @@ public class PostController {
                 Notification notification = new Notification();
                         notification.setMessage(user.getFirstName()+" "+user.getLastName()+ " đã thích bài viết của bạn  " );
                         notification.setType("like");
-                notificationService.create(notification);
+//                notificationService.create(user,user.getFollower(),notification.getMessage());
                 messagingTemplate.convertAndSendToUser(
                         post.getUser().getUsername(),
                         "/notification",

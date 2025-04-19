@@ -1,5 +1,6 @@
 package com.example.mxh.controller;
 
+import com.example.mxh.exception.UserException;
 import com.example.mxh.form.FormCreateChat;
 import com.example.mxh.map.ChatMapper;
 import com.example.mxh.model.chat.Chat;
@@ -26,7 +27,7 @@ public class ChatController {
         return ChatMapper.map(chat);
     }
     @GetMapping
-    public List<ChatDto> findUsersChat(@RequestHeader("Authorization") String jwt){
+    public List<ChatDto> findUsersChat(@RequestHeader("Authorization") String jwt) throws UserException {
         User user = userService.findUserByJwt(jwt);
         List<Chat> chats = chatService.findUserChat(user.getId());
         return ChatMapper.map(chats);
