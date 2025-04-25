@@ -1,10 +1,29 @@
 import axios from "axios";
 import { api, API_BASE_URL } from "../../config/api";
-import { GET_POST_FAILURE, GET_POST_REQUEST, GET_POST_SUCCESS,
-   GET_PROFILE_FAILURE, GET_PROFILE_REQUEST, GET_PROFILE_SUCCESS,
-    LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT_FAIL, LOGOUT_SUCCESS,
-     REGISTER_FAILURE, REGISTER_SUCCESS, SEARCH_USER_FAILURE, SEARCH_USER_REQUEST,
-      SEARCH_USER_SUCCESS, UPDATE_PROFILE_FAILURE, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS } from "./auth.actionType";
+import {
+  FORGOT_PASSWORD_FAILURE,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  GET_POST_FAILURE,
+  GET_POST_REQUEST,
+  GET_POST_SUCCESS,
+  GET_PROFILE_FAILURE,
+  GET_PROFILE_REQUEST,
+  GET_PROFILE_SUCCESS,
+  LOGIN_FAILURE,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGOUT_FAIL,
+  LOGOUT_SUCCESS,
+  REGISTER_FAILURE,
+  REGISTER_SUCCESS,
+  SEARCH_USER_FAILURE,
+  SEARCH_USER_REQUEST,
+  SEARCH_USER_SUCCESS,
+  UPDATE_PROFILE_FAILURE,
+  UPDATE_PROFILE_REQUEST,
+  UPDATE_PROFILE_SUCCESS
+} from "./auth.actionType";
 
 export const loginUserAction = (loginData) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
@@ -105,6 +124,18 @@ export const logoutAction = () => async (dispatch) => {
     dispatch({ type: LOGOUT_FAIL, payload: error });
   }
 };
+
+export const forgotPasswordAction = (value) => async (dispatch) => {
+  dispatch({type: FORGOT_PASSWORD_REQUEST});
+  try {
+    const {data} = await api.post(`${API_BASE_URL}/api/forgotPassword/verifyMail`, value.data);
+
+    dispatch({type: FORGOT_PASSWORD_SUCCESS, payload: data});
+  } catch (error) {
+    console.log("------", error);
+    dispatch({type: FORGOT_PASSWORD_FAILURE, payload: error});
+  }
+}
 
 
 
