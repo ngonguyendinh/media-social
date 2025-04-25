@@ -4,7 +4,7 @@ import { Avatar, Button, Card, Divider, Menu, MenuItem } from "@mui/material";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logoutAction } from "../../Redux/Auth/auth.action";
+import {getProfileAction, logoutAction} from "../../Redux/Auth/auth.action";
 
 const Sidebar = () => {
   const { auth } = useSelector(store => store);
@@ -55,6 +55,11 @@ const Sidebar = () => {
     navigate("/"); // Chuyển hướng đến trang đăng nhập
   };
 
+  const handleProfile = () => {
+    navigate(`/profile/${auth.user?.id}`);
+  };
+
+
 
   return (
     <Card className="card h-screen flex flex-col justify-between py-5">
@@ -101,7 +106,7 @@ const Sidebar = () => {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem onClick={handleProfile}>Profile</MenuItem>
             <MenuItem onClick={handleClose}>My account</MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem> 
           </Menu>
