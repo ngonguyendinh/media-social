@@ -35,7 +35,6 @@ public class NotificationWorkQueu {
         while (true) {
             try {
                 NotificationTask task = taskQueue.take();
-
                 messagingTemplate.convertAndSend("/topic/notifications/" + task.getRecipientId(),
                         task.getMessageContent());
 

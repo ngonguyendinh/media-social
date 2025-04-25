@@ -2,9 +2,11 @@ package com.example.mxh.controller;
 
 import com.example.mxh.exception.UserException;
 import com.example.mxh.map.NotificationMapper;
+import com.example.mxh.map.NotificationRecipientMapper;
 import com.example.mxh.model.notification.Notification;
 import com.example.mxh.model.notification.NotificationDto;
 import com.example.mxh.model.notification.NotificationRecipient;
+import com.example.mxh.model.notification.NotificationRecipientDto;
 import com.example.mxh.model.user.User;
 import com.example.mxh.service.notification.INotificationService;
 import com.example.mxh.service.user.IUserService;
@@ -26,9 +28,9 @@ public class NotificationController {
 
 
     @GetMapping
-    public ResponseEntity<List<NotificationRecipient>> getUserNotifications(@RequestHeader("Authorization") String jwt) throws UserException {
+    public ResponseEntity<List<NotificationRecipientDto>> getUserNotifications(@RequestHeader("Authorization") String jwt) throws UserException {
         User user = userService.findUserByJwt(jwt);
-        List<NotificationRecipient> notifications = notificationService.getNotificationsForUser(user.getId());
+        List<NotificationRecipientDto> notifications = NotificationRecipientMapper.map(notificationService.getNotificationsForUser(user.getId()));
         return ResponseEntity.ok(notifications);
     }
     @PutMapping("/read/{id}")

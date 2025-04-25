@@ -35,7 +35,7 @@ public class SecurityConfig {
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors ->cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(customizer -> customizer
-                        .requestMatchers("/auth/**","/ws/**","/api/forgotPassword/**")
+                        .requestMatchers("/auth/**","/ws/**","/api/forgotPassword/**","/api/notifications")
                         .permitAll().anyRequest()
                         .authenticated())
                 .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)

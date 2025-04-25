@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -47,7 +49,9 @@ public class User {
 
     private String avatar;
     private String backGround;
+
     @ManyToMany
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Post> savePost = new HashSet<>();
 
 
@@ -56,6 +60,7 @@ public class User {
     @Column(name = "following")
     private Set<Integer> following = new HashSet<>() ;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "user")
     List<Post> posts;
 

@@ -160,15 +160,11 @@ public class PostService implements IPostService{
         Post savedPost = postRepository.save(newPost);
 
         try {
-            // Lấy danh sách người theo dõi
-            Set<User> followers = new HashSet<>();
-            if (user.getFollowing() != null && !user.getFollowing().isEmpty()) {
-                followers = userService.findUsersByIds(user.getFollowing());
-            }
+
 
             // Tạo thông báo nếu có người theo dõi
             String message = "Có bài đăng mới từ " + user.getFirstName() + " " + user.getLastName();
-            notificationService.createPost(user, followers, message);
+            notificationService.createPost(user, message);
         } catch (Exception e) {
             // Log lỗi nhưng vẫn tiếp tục lưu bài đăng
             System.err.println("Error creating notification: " + e.getMessage());
@@ -258,10 +254,13 @@ public class PostService implements IPostService{
         User user = userRepository.findById(idUser)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng với id: " + idUser));
 
+
         if(post.getLike().contains(user)){
             post.getLike().remove(user);
         }
-        else{ post.getLike().add(user);}
+        else{
+            post.getLike().add(user);
+        }
         return postRepository.save(post);
     }
 }

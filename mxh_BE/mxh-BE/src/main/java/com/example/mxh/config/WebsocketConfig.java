@@ -18,7 +18,5 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app");
         registry.enableSimpleBroker("/group","/user","/chat","/notifications");
         registry.setUserDestinationPrefix("/user");
-
-
     }
 }

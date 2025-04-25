@@ -34,12 +34,17 @@ public class NotificationService implements  INotificationService{
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
-    public Notification createPost( User user ,Set<User> followers, String message) throws UserException {
+    public Notification createPost( User user , String message) throws UserException {
         Notification notification = new Notification();
         notification.setMessage(message);
         notification.setUser(user);
         notification.setType("newPost");
         notificationRepository.save(notification);
+        // Lấy danh sách người theo dõi
+        Set<User> followers = new HashSet<>();
+        if (user.getFollowing() != null && !user.getFollowing().isEmpty()) {
+            followers = userService.findUsersByIds(user.getFollowing());
+        }
         if (followers == null || followers.isEmpty()) {
             return notificationRepository.save(notification);
         }
@@ -73,5 +78,33 @@ public class NotificationService implements  INotificationService{
         notificationRecipient.setIsRead(true);
         return notificationRecipientRepository.save(notificationRecipient);
     }
+
+    @Override
+    public Notification createNotificationLikePost( User postOwner, User liker,String message) {
+        Notification notification = new Notification();
+        notification.setMessage(message);
+        notification.setUser(liker);
+        notification.setType("like");
+        notificationRepository.save(notification);
+
+        // Tạo thông báo cho chủ bài viết
+        NotificationRecipient recipient = new NotificationRecipient();
+        recipient.setNotification(notification);
+        recipient.setRecipient(postOwner);
+        recipient.setIsRead(false);
+        recipient.setReceivedAt(LocalDateTime.now());
+        NotificationRecipient savedRecipient = notificationRecipientRepository.save(recipient);
+
+        // Tạo nhiệm vụ gửi thông báo
+        NotificationTask task = new NotificationTask(
+                savedRecipient.getId(),
+                Long.valueOf(postOwner.getId()),
+                message
+        );
+        notificationWorkQueu.enqueue(task);
+
+        return notification;
+    }
+
 
 }
