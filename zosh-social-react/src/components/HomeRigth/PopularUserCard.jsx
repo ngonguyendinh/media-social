@@ -3,22 +3,20 @@ import { red } from "@mui/material/colors";
 import React from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const PopularUserCard = () => {
+const PopularUserCard = ({linkImage, title, subheader}) => {
   return (
     <div>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+            <Avatar alt="Remy Sharp" src={linkImage} />
         }
         action={
           <Button size="small">
             Follow
           </Button>
         }
-        title="Phạm Văn Tùng"
-        subheader="@PVT"
+        title={title}
+        subheader={subheader}
       />
     </div>
   );
