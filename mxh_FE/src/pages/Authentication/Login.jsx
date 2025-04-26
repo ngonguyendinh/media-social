@@ -69,8 +69,6 @@ const Login = () => {
               />
             </div>
           </div>
-      <div className="flex gap-2 justify-end"><button onClick={() => navigate("/register")} className="text-blue-400">Forgot password</button></div>
-
           <Button
             sx={{ padding: ".8rem 0rem" }}
             fullWidth
@@ -84,7 +82,7 @@ const Login = () => {
       </Formik>
       <div className="flex gap-2 items-center justify-center pt-5">
         <p>if you don't have account?</p>
-        <button onClick={() => navigate("/register")} className="text-blue-400">Register</button>
+        <button onClick={() => navigate("/register")}>Register</button>
       </div>
     </>
   );

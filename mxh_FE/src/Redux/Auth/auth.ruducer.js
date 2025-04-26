@@ -13,7 +13,7 @@ import {
   UPDATE_PROFILE_FAILURE,
   SEARCH_USER_SUCCESS,
   SEARCH_USER_REQUEST,
-  SEARCH_USER_FAILURE,
+  SEARCH_USER_FAILURE, FORGOT_PASSWORD_SUCCESS, FORGOT_PASSWORD_REQUEST, FORGOT_PASSWORD_FAILURE,
 
 } from "./auth.actionType";
 
@@ -32,10 +32,12 @@ export const authReducer = (state = initialState, action) => {
     case GET_PROFILE_REQUEST: // xử lý trạng thái lấy thông tin profile
     case UPDATE_PROFILE_REQUEST: // xử lý trạng thái update thông tin profile
     case SEARCH_USER_REQUEST:
+    case FORGOT_PASSWORD_REQUEST:
       return { ...state, loading: true, error: null };
 
     case GET_PROFILE_SUCCESS:
     case UPDATE_PROFILE_SUCCESS:
+    case FORGOT_PASSWORD_SUCCESS:
       return { ...state, user: action.payload, loading: false, error: null };
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
@@ -47,6 +49,7 @@ export const authReducer = (state = initialState, action) => {
     case REGISTER_FAILURE: // xử lý lỗi khi đăng ký 
     case UPDATE_PROFILE_FAILURE: // Xử lý lỗi cập nhật profile
     case SEARCH_USER_FAILURE:
+    case FORGOT_PASSWORD_FAILURE:
       return { ...state, loading: false, error: action.payload };
 
     case LOGOUT_SUCCESS:
