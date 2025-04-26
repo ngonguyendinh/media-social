@@ -51,10 +51,11 @@ const PostCard = ({ item }) => {
     }
     dispatch(createCommentAction(reqData))
   };
-  const { post, auth } = useSelector((store) => store);
+  const { auth } = useSelector((store) => store);
   const handleLikePost = () => {
     dispatch(getLikePostAction(item.id))
   }
+
   return (
     <Card className=''>
       <CardHeader
@@ -84,12 +85,14 @@ const PostCard = ({ item }) => {
         </Typography>
       </CardContent>
 
-      <CardMedia
-        component="img"
-        height="194"
-        image={item.image}
-        alt="Paella dish"
-      />
+      {item.image ? (
+        <CardMedia
+          component="img"
+          height="194"
+          image={item.image}
+          alt="Paella dish"
+        />
+      ) : ''}
       <CardActions className="flex justify-between" disableSpacing>
         <div>
           <IconButton onClick={handleLikePost}>
@@ -119,8 +122,7 @@ const PostCard = ({ item }) => {
             if (e.key == "Enter") {
               handleCreateComment(e.target.value);
               e.target.value = "";
-              console.log("enter.....", e.target.value)
-            }
+               }
           }}
             className='w-full outline-none bg-transparent border border-[#3b4054] rounded-full px-5 py-2'
             type="text"
