@@ -4,7 +4,7 @@ import {TextField} from "@mui/material";
 import {data, Link, useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
-import {verifyPasswordCodeAction} from "../../Redux/Auth/auth.action";
+import {resetPasswordAction} from "../../Redux/Auth/auth.action";
 
 const PasswordCode = () => {
     const dispatch = useDispatch();
@@ -12,12 +12,14 @@ const PasswordCode = () => {
     const auth = useSelector((state) => state.auth);
 
     const initialValues = {
-        otp: "",
+        password: "",
+        confirmPassword: ""
     };
     const validationSchema = Yup.object({
-        otp: Yup.string()
-            .required("Mã xác thực không được để trống"),
-    })
+        password: Yup.string().required("Mật khẩu không được để trống"),
+        confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], "Mật khẩu không khớp").required("Mật khẩu không được để trống"),
+    });
+
     const handleSubmit = (value) => {
         const email = localStorage.getItem("email");
         const response = {email, ...value}
@@ -25,15 +27,16 @@ const PasswordCode = () => {
             data: response
         };
         console.log(passcode.data)
-        // console.log(value)
-        dispatch(verifyPasswordCodeAction(passcode.data))
+        dispatch(resetPasswordAction(passcode.data))
     };
 
     useEffect(() => {
-        if (auth.passwordCodeSuccess) {
-            navigate("/change-pw");
+        if (auth.changePasswordSuccess) {
+            navigate("/");
+            localStorage.removeItem("email");
         }
-    }, [auth.passwordCodeSuccess, navigate]);
+    }, [auth.changePasswordSuccess, navigate]);
+
 
     return (
         <>
@@ -46,14 +49,29 @@ const PasswordCode = () => {
                     <div>
                         <Field
                             as={TextField}
-                            name="otp"
-                            placeholder="Nhập code"
-                            type="text"
+                            name="password"
+                            placeholder="Nhập password"
+                            type="password"
                             variant="outlined"
                             fullWidth
                         />
                         <ErrorMessage
-                            name="otp"
+                            name="password"
+                            component="div"
+                            className="text-red-500"
+                        />
+                    </div>
+                    <div>
+                        <Field
+                            as={TextField}
+                            name="confirmPassword"
+                            placeholder="Nhập confirmPassword"
+                            type="password"
+                            variant="outlined"
+                            fullWidth
+                        />
+                        <ErrorMessage
+                            name="confirmPassword"
                             component="div"
                             className="text-red-500"
                         />

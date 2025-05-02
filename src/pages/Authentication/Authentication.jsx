@@ -5,6 +5,7 @@ import Register from "./Register";
 import { Route, Routes } from "react-router-dom";
 import ForgotPassword from "./ForgotPassword";
 import PasswordCode from "./PasswordCode";
+import ChangePassword from "./ChangePassword";
 
 const Authentication = () => {
   return (
@@ -32,6 +33,7 @@ const Authentication = () => {
                 <Route path="/forgot-pw" element={<ForgotPassword />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/password-code" element={<PasswordCode />} />
+                <Route path="/change-pw" element={<ChangePassword />} />
               </Routes>
             </Card>
           </div>
