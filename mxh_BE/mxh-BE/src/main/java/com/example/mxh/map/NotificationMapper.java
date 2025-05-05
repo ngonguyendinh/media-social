@@ -19,4 +19,10 @@ public class NotificationMapper {
         dto.setReceivedAt(notification.getCreatedAt());
         return dto;
     }
+
+    public static Notification map(NotificationDto notificationDto) {
+        Notification notification = new Notification();
+        notification.setMessage(notificationDto.getNotification());
+        return notification;
+    }
 }

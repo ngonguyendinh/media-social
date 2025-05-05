@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useDispatch } from 'react-redux'
 import { loginUserAction } from "../../Redux/Auth/auth.action";
@@ -80,6 +80,7 @@ const Login = () => {
           </Button>
         </Form>
       </Formik>
+      <Link to="/forgot-pw" className="justify-end flex">Forgot password</Link>
       <div className="flex gap-2 items-center justify-center pt-5">
         <p>if you don't have account?</p>
         <button onClick={() => navigate("/register")}>Register</button>

@@ -128,7 +128,7 @@ export const logoutAction = () => async (dispatch) => {
 export const forgotPasswordAction = (value) => async (dispatch) => {
   dispatch({type: FORGOT_PASSWORD_REQUEST});
   try {
-    const {data} = await api.post(`${API_BASE_URL}/api/forgotPassword/verifyMail`, value.data);
+    const {data} = await axios.post(`${API_BASE_URL}/api/forgotPassword/verifyMail`, value.data);
 
     dispatch({type: FORGOT_PASSWORD_SUCCESS, payload: data});
   } catch (error) {

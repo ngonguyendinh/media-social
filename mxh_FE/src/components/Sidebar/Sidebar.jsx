@@ -85,7 +85,9 @@ const Sidebar = () => {
             <Avatar src={auth.user?.avatar}/>
             <div>
               <p className="font-bold">{auth.user?.firstName + " " + auth.user?.lastName}</p>
-              <p className="opacity-70">@{formatId(auth.user?.firstName.toLowerCase()) + "_" + formatId(auth.user?.lastName.toLowerCase())}</p>
+              <p className="opacity-70">
+                @{formatId(auth.user?.firstName?.toLowerCase() ?? '') + "_" + formatId(auth.user?.lastName?.toLowerCase() ?? '')}
+              </p>
             </div>
           </div>
           <Button

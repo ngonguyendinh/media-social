@@ -51,7 +51,6 @@ public class SecurityConfig {
                 cfg.setAllowedOrigins(List.of("http://localhost:3000"));
                 cfg.setAllowCredentials(true);
                 cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-
                 cfg.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
                 cfg.addAllowedHeader(String.valueOf(Collections.singletonList("*")));
                 cfg.setExposedHeaders(List.of("Authorization"));
